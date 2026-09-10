@@ -1,6 +1,6 @@
 package exception;
 
-public class UserNoteFoundException extends RuntimeException {
+public class UserNoteFoundException extends Exception {
     public UserNoteFoundException(String message) {
         super(message);
     }

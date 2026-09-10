@@ -6,6 +6,6 @@ public class InvalidCredentialsException extends Exception{
             super(message);
         }
         public InvalidCredentialsException(){
-            super("InvalidCredentialsException");
+            super("Email ou Mot de passe Incorrect");
         }
 }
