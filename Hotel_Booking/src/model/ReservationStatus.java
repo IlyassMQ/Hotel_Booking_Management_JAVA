@@ -1,6 +1,6 @@
 package model;
 
-enum ReservationStatus {
+public enum ReservationStatus {
     CONFIRMED,
     CANCELLED,
     COMPLETED

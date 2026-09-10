@@ -1,6 +1,6 @@
 package model;
 
-enum RoomStatus {
+public enum RoomStatus {
     AVAILABLE,
     MAINTENANCE
 }
