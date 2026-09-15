@@ -43,6 +43,9 @@ public class ReservationService {
         checkers.timeCheck(checkIn,checkOut);
         List<Reservation> roomReservation = reservationRepository.findByRoomNumber(roomNumber);
         for (Reservation r : roomReservation) {
+            if (r.getStatus().equals(ReservationStatus.CANCELLED)) {
+                continue;
+            }
             if (checkIn.isBefore(r.getCheckOut()) && checkOut.isAfter(r.getCheckIn())) {
                 throw new InvalidReservationDateException();
             }
@@ -136,7 +139,7 @@ public class ReservationService {
         }
         return reservation;
     }
-
+    
 }
 
 
