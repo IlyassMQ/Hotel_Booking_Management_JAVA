@@ -13,19 +13,17 @@ import java.util.UUID;
 
 public class AuthService {
     private final UserRepository userRepository;
-    private final ValidationUtils validationUtils;
 
     private User currentUser;
 
-    public AuthService(UserRepository userRepository, ValidationUtils validationUtils) {
+    public AuthService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.validationUtils = validationUtils;
     }
 
     public void register(String fullName ,String email,String phone,String password) throws EmailAlreadyExistsException{
        if (userRepository.existsByEmail(email)){
            throw new EmailAlreadyExistsException();
-       } else if (validationUtils.emailVerfication(email)) {
+       } else if (ValidationUtils.emailVerfication(email) && ValidationUtils.passwordVerfication(password) && ValidationUtils.phoneVerfication(phone)) {
            User user = new User(UUID.randomUUID(),fullName,email,phone,password);
            userRepository.save(user);
        }
@@ -59,7 +57,7 @@ public class AuthService {
         }
         User userNow = currentUser.get();
 
-        if (validationUtils.emailVerfication(newEmail)) {
+        if (ValidationUtils.emailVerfication(newEmail)) {
             boolean emailEX = userRepository.existsByEmail(newEmail);
             if (emailEX && !userNow.getEmail().equals(newEmail)) {
                 throw new EmailAlreadyExistsException();
@@ -70,7 +68,7 @@ public class AuthService {
         userRepository.save(userNow);
     }
 
-public void passModif(User user,String newPassword ,String oldPassword) throws InvalidCredentialsException{
+public void passModif(User user,String newPassword ,String oldPassword) throws InvalidCredentialsException, UserNoteFoundException {
     Optional<User> currentUser = userRepository.findByEmail(user.getEmail());
     if (currentUser.isEmpty()) {
         throw new UserNoteFoundException();
@@ -80,7 +78,7 @@ public void passModif(User user,String newPassword ,String oldPassword) throws I
     if (!oldPassword.equals(userNow.getPassword())) {
         throw new InvalidCredentialsException();
     }
-    if (validationUtils.passwordVerfication(newPassword)) {
+    if (ValidationUtils.passwordVerfication(newPassword)) {
         userNow.setPassword(newPassword);
     }
 
