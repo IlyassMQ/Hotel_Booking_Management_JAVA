@@ -19,8 +19,16 @@ public class InMemoryUserRepository implements UserRepository {
     }
     @Override
     public Optional<User> findByEmail(String email){
-        return Optional.ofNullable(users.get(email));
+        for (User user : users.values()) {
+            if (user.getEmail().equals(email)) {
+                return Optional.of(user);
+            }
+        }
+
+        return Optional.empty();
     }
+
+
     @Override
     public boolean existsByEmail(String email){
         return users.values().stream().anyMatch(u -> u.getEmail().equals(email));
