@@ -52,6 +52,7 @@ public class ConsoleReservation {
            List<Reservation> reservations= reservationService.getUserReservations();
            printReservation(reservations);
        } catch (ReservationNotFoundException e) {
+           System.out.println("No reservation for now");
            System.out.println(e.getMessage());
        }
     }
